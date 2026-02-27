@@ -8,7 +8,7 @@
     "build": "tsc",
     "start": "node dist/server.js",
     "typecheck": "tsc --noEmit",
-    "lint": "echo 'no linter configured yet'"
+    "lint": "eslint src/"
   },
   "dependencies": {
     "fastify": "^4.28.0",

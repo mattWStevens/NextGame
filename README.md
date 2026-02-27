@@ -35,8 +35,12 @@ nextgame/
 | Data Validation    | Zod                  | Strict contracts for API inputs, DB records, local schemas     |
 | Containerization   | Docker               | Environment parity between dev and production                  |
 | CI/CD              | GitHub Actions       | Automated linting, type-checking, and builds                   |
+| AI / LLM           | OpenAI + Anthropic   | Mood-based game recommendations with provider fallback         |
 
 ## Planned Features
+
+### Authentication
+- **Multi-User Auth**: Email/password authentication with bcrypt hashing and Redis-backed session cookies.
 
 ### Foundation & Offline-First
 - **Game Discovery Engine**: IGDB API integration via Fastify proxy with Redis-backed caching for rate-limit protection.
@@ -44,18 +48,18 @@ nextgame/
 - **Zod Validation**: Strict typing for all external API data.
 
 ### State Resilience & Outbox Pattern
-- **Kanban Backlog Board**: Drag-and-drop interface (Backlog → Playing → Finished) with optimistic UI via TanStack Query.
-- **Sync Outbox**: Background queue that batches offline changes and syncs to the server via tRPC mutations.
+- **Kanban Backlog Board**: Drag-and-drop interface (Backlog → Playing → Beaten) with optimistic UI via TanStack Query.
+- **Sync Outbox**: Event-driven outbox that syncs writes immediately when online; failed operations queue locally and flush on reconnect via tRPC mutations.
 - **"Chaos" Toggle**: UI component to simulate offline mode for testing resilience.
 
 ### Intelligence Layer (AI Orchestration)
-- **"Vibe" Recommender**: AI-powered drawer where users input mood and time constraints. Uses OpenAI to consider a user's backlog and games that they may not be acquainted with yet to create a "What to Play Now" list.
+- **"Vibe" Recommender**: AI-powered drawer where users input mood and time constraints. Uses OpenAI (with Anthropic as fallback) to consider a user's backlog and games that they may not be acquainted with yet to create a "What to Play Now" list.
 - **Reasoning Cards**: Each recommendation shows *why* the AI chose it.
 - **Strict JSON Schema**: LLM output is validated to prevent UI breakage from hallucinated data.
 
 ### Conflict Resolution & Production Readiness
 - **Last-Write-Wins (LWW)**: Conflict resolution using `updated_at` timestamps for multi-device sync.
-- **Virtualized Lists**: `react-window` or `tanstack-virtual` for large game libraries.
+- **Virtualized Lists**: `@tanstack/react-virtual` for large game libraries.
 - **Dockerized Deployment**: Containerized services deployed via GitHub Actions CI/CD.
 
 ## Getting Started
