@@ -6,3 +6,5 @@
  */
 
 export const APP_NAME = "NextGame";
+
+export * from "./schemas/index.js";

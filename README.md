@@ -28,11 +28,11 @@ nextgame/
 | Frontend Build     | Vite                 | Sub-second HMR, optimized production bundles                   |
 | Frontend UI        | React + Tailwind CSS | Reactive, utility-first UI                                     |
 | Local Database     | Dexie.js (IndexedDB) | Browser-side source of truth; offline game library + sync queue|
-| Sync Engine        | tRPC + Fastify       | End-to-end type safety between client and server               |
+| Sync Engine        | tRPC v11 + Fastify   | End-to-end type safety between client and server               |
 | Remote Database    | PostgreSQL           | ACID-compliant source of record                                |
-| State Management   | TanStack Query       | Caching, background revalidation, optimistic UI                |
+| State Management   | TanStack Query v5    | Caching, background revalidation, optimistic UI                |
 | ORM                | Prisma               | Type-safe DB access, schema shared via tRPC                    |
-| Data Validation    | Zod                  | Strict contracts for API inputs, DB records, local schemas     |
+| Data Validation    | Zod v4               | Strict contracts for API inputs, DB records, local schemas     |
 | Containerization   | Docker               | Environment parity between dev and production                  |
 | CI/CD              | GitHub Actions       | Automated linting, type-checking, and builds                   |
 | AI / LLM           | OpenAI + Anthropic   | Mood-based game recommendations with provider fallback         |
