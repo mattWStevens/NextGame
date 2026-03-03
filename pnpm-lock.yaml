@@ -99,13 +99,14 @@ importers:
         version: 5.4.21(@types/node@20.19.33)
 
   packages/shared:
+    dependencies:
+      zod:
+        specifier: ^4.0.0
+        version: 4.3.6
     devDependencies:
       typescript:
         specifier: ^5.4.0
         version: 5.9.3
-      zod:
-        specifier: ^3.23.0
-        version: 3.25.76
 
 packages:
 
@@ -2096,6 +2097,9 @@ packages:
   zod@3.25.76:
     resolution: {integrity: sha512-gzUt/qt81nXsFGKIFcC3YnfEAx5NkunCfnDlvuBSSFS02bcXu4Lmea0AFIUwbLWxWPx3d9p8S5QoaujKcNQxcQ==}
 
+  zod@4.3.6:
+    resolution: {integrity: sha512-rftlrkhHZOcjDwkGlnUtZZkvaPHCsDATp4pGpuOOMDaTdDDXF91wuVDJoWoPsKX/3YPQ5fHuF3STjcYyKr+Qhg==}
+
 snapshots:
 
   '@acemir/cssom@0.9.31': {}
@@ -3933,3 +3937,5 @@ snapshots:
       zod: 3.25.76
 
   zod@3.25.76: {}
+
+  zod@4.3.6: {}

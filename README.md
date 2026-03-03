@@ -28,14 +28,24 @@ nextgame/
 | Frontend Build     | Vite                 | Sub-second HMR, optimized production bundles                   |
 | Frontend UI        | React + Tailwind CSS | Reactive, utility-first UI                                     |
 | Local Database     | Dexie.js (IndexedDB) | Browser-side source of truth; offline game library + sync queue|
-| Sync Engine        | tRPC + Fastify       | End-to-end type safety between client and server               |
+| Sync Engine        | tRPC v11 + Fastify   | End-to-end type safety between client and server               |
 | Remote Database    | PostgreSQL           | ACID-compliant source of record                                |
-| State Management   | TanStack Query       | Caching, background revalidation, optimistic UI                |
+| State Management   | TanStack Query v5    | Caching, background revalidation, optimistic UI                |
 | ORM                | Prisma               | Type-safe DB access, schema shared via tRPC                    |
-| Data Validation    | Zod                  | Strict contracts for API inputs, DB records, local schemas     |
+| Data Validation    | Zod v4               | Strict contracts for API inputs, DB records, local schemas     |
 | Containerization   | Docker               | Environment parity between dev and production                  |
 | CI/CD              | GitHub Actions       | Automated linting, type-checking, and builds                   |
 | AI / LLM           | OpenAI + Anthropic   | Mood-based game recommendations with provider fallback         |
+
+## 🧠 Development Methodology & AI-Augmented Engineering
+
+Building NextGame provided an opportunity to demonstrate a modern, AI-augmented development workflow. Rather than relying on AI to generate the application from scratch, I utilized Claude Code strictly as a force multiplier while maintaining complete architectural control. 
+
+Drawing on my background leading UI engineering and full-stack development, I structured this project around a rigorous spec-driven approach:
+
+* **Iterative System Design:** Rather than solo-authoring the architecture in a vacuum, I treated Claude Code as an architectural sounding board. Through rigorous back-and-forth iteration, I directed the AI to help me fine-tune the component hierarchy, state management, and local-first data flow. This resulted in comprehensive technical specifications (available in `/docs/implementation_plan.md`) which then served as the uncompromising single source of truth for the project.
+* **Strategic Acceleration:** For established patterns and boilerplate that I have mastered over the past six years, I leveraged AI to execute my designs rapidly. The AI acted as a junior pair programmer, executing precise instructions derived from the project specs. 
+* **Intentional Hand-Coding:** For unfamiliar paradigms and the core complexities of the AI-driven recommendation engine, I intentionally hand-wrote the logic after studying primary documentation. In these areas, I utilized Claude Code strictly as a peer-reviewer to catch edge cases and optimize performance.
 
 ## Planned Features
 

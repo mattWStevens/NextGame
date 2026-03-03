@@ -73,4 +73,14 @@ export default tseslint.config(
       },
     },
   },
+
+  // Allow _-prefixed variables to be intentionally unused (e.g. destructuring)
+  {
+    rules: {
+      "@typescript-eslint/no-unused-vars": [
+        "error",
+        { varsIgnorePattern: "^_", argsIgnorePattern: "^_", caughtErrorsIgnorePattern: "^_" },
+      ],
+    },
+  },
 );
