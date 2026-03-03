@@ -72,7 +72,7 @@ GitHub Actions (`.github/workflows/ci.yml`) runs on pushes/PRs to `main`: instal
 - **TypeScript strict mode** is enabled across all packages
 - **ES2022** target, **ESNext** modules, **bundler** module resolution
 - **pnpm 9.1.0** is the required package manager (enforced in package.json)
-- **Node >= 22.4.1** required
+- **Node >= 22.12.0** required (Prisma requires 22.12+)
 - Git workflow: `develop` branch for development, `main` for production/PRs
 
 ## Planned Architecture (not yet implemented)

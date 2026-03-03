@@ -76,7 +76,7 @@ Drawing on my background leading UI engineering and full-stack development, I st
 
 ### Prerequisites
 
-- **Node.js** >= 22.4.1
+- **Node.js** >= 22.12.0
 - **pnpm** >= 9
 - **Docker** (for PostgreSQL and Redis)
 
