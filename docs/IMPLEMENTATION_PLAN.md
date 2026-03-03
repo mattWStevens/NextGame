@@ -47,7 +47,7 @@ NextGame is a local-first game discovery and backlog management app. The codebas
 - Create `packages/shared/src/__tests__/schemas.test.ts` — validates correct/incorrect data
 - **AC:** All types exported, `pnpm typecheck` passes, schema tests pass
 
-### Task 1.4: Shared Package Build Fix
+### Task 1.4: Shared Package Build Fix (COMPLETE)
 - The shared package currently has `"main": "./src/index.ts"` (raw TypeScript). Node.js cannot import `.ts` files at runtime, so the API's production build fails.
 - Add `build` script to `packages/shared/package.json`: `"build": "tsc"`
 - Update `"main"` to `"./dist/index.js"`, add `"types": "./dist/index.d.ts"`

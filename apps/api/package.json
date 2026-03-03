@@ -12,12 +12,14 @@
     "lint": "eslint src/"
   },
   "dependencies": {
-    "fastify": "^4.28.0",
-    "@nextgame/shared": "workspace:*"
+    "@nextgame/shared": "workspace:*",
+    "@prisma/client": "^7.4.2",
+    "fastify": "^4.28.0"
   },
   "devDependencies": {
+    "@types/node": "^20.14.0",
+    "prisma": "^7.4.2",
     "tsx": "^4.16.0",
-    "typescript": "^5.4.0",
-    "@types/node": "^20.14.0"
+    "typescript": "^5.4.0"
   }
 }
