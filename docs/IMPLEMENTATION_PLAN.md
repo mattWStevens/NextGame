@@ -60,7 +60,7 @@ NextGame is a local-first game discovery and backlog management app. The codebas
 
 **Goal:** Prisma schema with User and Game models, database client, Redis client.
 
-### Task 2.1: Prisma Setup
+### Task 2.1: Prisma Setup (COMPLETE)
 - Install in `apps/api`: `prisma` (dev), `@prisma/client`
 - Create `apps/api/prisma/schema.prisma`:
   - **User** model: id (uuid), email (unique), passwordHash, displayName, createdAt, updatedAt

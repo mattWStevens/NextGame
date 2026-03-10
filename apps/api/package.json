@@ -19,6 +19,7 @@
   "dependencies": {
     "@nextgame/shared": "workspace:*",
     "@prisma/client": "^7.4.2",
+    "dotenv": "^17.3.1",
     "fastify": "^4.28.0"
   },
   "devDependencies": {
