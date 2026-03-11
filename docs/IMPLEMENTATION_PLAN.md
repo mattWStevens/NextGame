@@ -47,7 +47,7 @@ NextGame is a local-first game discovery and backlog management app. The codebas
 - Create `packages/shared/src/__tests__/schemas.test.ts` — validates correct/incorrect data
 - **AC:** All types exported, `pnpm typecheck` passes, schema tests pass
 
-### Task 1.4: Shared Package Build Fix
+### Task 1.4: Shared Package Build Fix (COMPLETE)
 - The shared package currently has `"main": "./src/index.ts"` (raw TypeScript). Node.js cannot import `.ts` files at runtime, so the API's production build fails.
 - Add `build` script to `packages/shared/package.json`: `"build": "tsc"`
 - Update `"main"` to `"./dist/index.js"`, add `"types": "./dist/index.d.ts"`
@@ -60,7 +60,7 @@ NextGame is a local-first game discovery and backlog management app. The codebas
 
 **Goal:** Prisma schema with User and Game models, database client, Redis client.
 
-### Task 2.1: Prisma Setup
+### Task 2.1: Prisma Setup (COMPLETE)
 - Install in `apps/api`: `prisma` (dev), `@prisma/client`
 - Create `apps/api/prisma/schema.prisma`:
   - **User** model: id (uuid), email (unique), passwordHash, displayName, createdAt, updatedAt
@@ -70,9 +70,9 @@ NextGame is a local-first game discovery and backlog management app. The codebas
 - Run initial migration: `prisma migrate dev --name init`
 - **AC:** `games` and `users` tables created in Docker Postgres, Prisma client generated
 
-### Task 2.2: Database and Redis Client Singletons
+### Task 2.2: Database and Redis Client Singletons (COMPLETE)
 - Create `apps/api/src/lib/db.ts` — Prisma client singleton (prevents connection exhaustion in dev)
-- Create `apps/api/src/lib/redis.ts` — `ioredis` client (install `ioredis`)
+- Create `apps/api/src/lib/redis.ts` — `node-redis` client (install `redis`)
 - Create `apps/api/prisma/seed.ts` — seeds a test user + 5-10 sample games
 - Update `apps/api/src/lib/index.ts` — re-export both clients
 - **AC:** `pnpm --filter api db:seed` populates data, both clients connect to Docker services
@@ -410,7 +410,7 @@ Phase 1 (Foundation: Lint, Test, Schemas)
 | `@testing-library/react`, `@testing-library/jest-dom`, `@testing-library/user-event`, `jsdom` | web (dev) | MIT |
 | `prisma` | api (dev) | Apache 2.0 |
 | `@prisma/client` | api | Apache 2.0 |
-| `ioredis` | api | MIT |
+| `redis` | api | MIT |
 | `bcrypt`, `@types/bcrypt` | api | MIT |
 | `@fastify/cookie` | api | MIT |
 | `@fastify/session` | api | MIT |
