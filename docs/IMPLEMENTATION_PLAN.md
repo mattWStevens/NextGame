@@ -70,7 +70,7 @@ NextGame is a local-first game discovery and backlog management app. The codebas
 - Run initial migration: `prisma migrate dev --name init`
 - **AC:** `games` and `users` tables created in Docker Postgres, Prisma client generated
 
-### Task 2.2: Database and Redis Client Singletons
+### Task 2.2: Database and Redis Client Singletons (COMPLETE)
 - Create `apps/api/src/lib/db.ts` — Prisma client singleton (prevents connection exhaustion in dev)
 - Create `apps/api/src/lib/redis.ts` — `node-redis` client (install `redis`)
 - Create `apps/api/prisma/seed.ts` — seeds a test user + 5-10 sample games
