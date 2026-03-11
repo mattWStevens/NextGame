@@ -18,12 +18,16 @@
   },
   "dependencies": {
     "@nextgame/shared": "workspace:*",
+    "@prisma/adapter-pg": "^7.4.2",
     "@prisma/client": "^7.4.2",
     "dotenv": "^17.3.1",
-    "fastify": "^4.28.0"
+    "fastify": "^4.28.0",
+    "pg": "^8.20.0",
+    "redis": "^5.11.0"
   },
   "devDependencies": {
     "@types/node": "^20.14.0",
+    "@types/pg": "^8.18.0",
     "prisma": "^7.4.2",
     "tsx": "^4.16.0",
     "typescript": "^5.4.0"

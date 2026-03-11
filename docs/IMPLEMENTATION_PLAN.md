@@ -72,7 +72,7 @@ NextGame is a local-first game discovery and backlog management app. The codebas
 
 ### Task 2.2: Database and Redis Client Singletons
 - Create `apps/api/src/lib/db.ts` — Prisma client singleton (prevents connection exhaustion in dev)
-- Create `apps/api/src/lib/redis.ts` — `ioredis` client (install `ioredis`)
+- Create `apps/api/src/lib/redis.ts` — `node-redis` client (install `redis`)
 - Create `apps/api/prisma/seed.ts` — seeds a test user + 5-10 sample games
 - Update `apps/api/src/lib/index.ts` — re-export both clients
 - **AC:** `pnpm --filter api db:seed` populates data, both clients connect to Docker services
@@ -410,7 +410,7 @@ Phase 1 (Foundation: Lint, Test, Schemas)
 | `@testing-library/react`, `@testing-library/jest-dom`, `@testing-library/user-event`, `jsdom` | web (dev) | MIT |
 | `prisma` | api (dev) | Apache 2.0 |
 | `@prisma/client` | api | Apache 2.0 |
-| `ioredis` | api | MIT |
+| `redis` | api | MIT |
 | `bcrypt`, `@types/bcrypt` | api | MIT |
 | `@fastify/cookie` | api | MIT |
 | `@fastify/session` | api | MIT |
