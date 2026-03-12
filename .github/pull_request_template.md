@@ -41,26 +41,31 @@
 <!-- All items must be checked before requesting review. -->
 
 ### Code Quality
+
 - [ ] My code follows the project's style guidelines and conventions
 - [ ] I have performed a self-review of my own code
 - [ ] I have added comments in hard-to-understand areas
 - [ ] I have removed all debugging code, console logs, and commented-out code
 
 ### Testing
+
 - [ ] I have added tests that prove my fix is effective or my feature works
 - [ ] New and existing unit tests pass locally
 - [ ] Any dependent changes have been merged and published
 
 ### Documentation
+
 - [ ] I have updated relevant documentation (README, API docs, inline docs)
 - [ ] I have added/updated changelog entries if required
 
 ### Security & Performance
+
 - [ ] I have considered the security implications of this change
 - [ ] I have not introduced any new credentials, secrets, or sensitive data
 - [ ] I have considered the performance impact of this change
 
 ### Deployment
+
 - [ ] This change requires no database migrations **OR** migrations have been included and tested
 - [ ] This change requires no environment variable changes **OR** they have been documented
 - [ ] This change is backward compatible **OR** a migration plan has been communicated
