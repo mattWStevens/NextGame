@@ -22,52 +22,57 @@ nextgame/
 
 ### Tech Stack
 
-| Layer              | Technology           | Purpose                                                        |
-| ------------------ | -------------------- | -------------------------------------------------------------- |
-| Monorepo           | Turborepo + pnpm     | Task orchestration, shared types across workspace              |
-| Frontend Build     | Vite                 | Sub-second HMR, optimized production bundles                   |
-| Frontend UI        | React + Tailwind CSS | Reactive, utility-first UI                                     |
-| Local Database     | Dexie.js (IndexedDB) | Browser-side source of truth; offline game library + sync queue|
-| Sync Engine        | tRPC v11 + Fastify   | End-to-end type safety between client and server               |
-| Remote Database    | PostgreSQL           | ACID-compliant source of record                                |
-| State Management   | TanStack Query v5    | Caching, background revalidation, optimistic UI                |
-| ORM                | Prisma               | Type-safe DB access, schema shared via tRPC                    |
-| Data Validation    | Zod v4               | Strict contracts for API inputs, DB records, local schemas     |
-| Containerization   | Docker               | Environment parity between dev and production                  |
-| CI/CD              | GitHub Actions       | Automated linting, type-checking, and builds                   |
-| AI / LLM           | OpenAI + Anthropic   | Mood-based game recommendations with provider fallback         |
+| Layer            | Technology           | Purpose                                                         |
+| ---------------- | -------------------- | --------------------------------------------------------------- |
+| Monorepo         | Turborepo + pnpm     | Task orchestration, shared types across workspace               |
+| Frontend Build   | Vite                 | Sub-second HMR, optimized production bundles                    |
+| Frontend UI      | React + Tailwind CSS | Reactive, utility-first UI                                      |
+| Local Database   | Dexie.js (IndexedDB) | Browser-side source of truth; offline game library + sync queue |
+| Sync Engine      | tRPC v11 + Fastify   | End-to-end type safety between client and server                |
+| Remote Database  | PostgreSQL           | ACID-compliant source of record                                 |
+| State Management | TanStack Query v5    | Caching, background revalidation, optimistic UI                 |
+| ORM              | Prisma               | Type-safe DB access, schema shared via tRPC                     |
+| Data Validation  | Zod v4               | Strict contracts for API inputs, DB records, local schemas      |
+| Containerization | Docker               | Environment parity between dev and production                   |
+| CI/CD            | GitHub Actions       | Automated linting, type-checking, and builds                    |
+| AI / LLM         | OpenAI + Anthropic   | Mood-based game recommendations with provider fallback          |
 
 ## 🧠 Development Methodology & AI-Augmented Engineering
 
-Building NextGame provided an opportunity to demonstrate a modern, AI-augmented development workflow. Rather than relying on AI to generate the application from scratch, I utilized Claude Code strictly as a force multiplier while maintaining complete architectural control. 
+Building NextGame provided an opportunity to demonstrate a modern, AI-augmented development workflow. Rather than relying on AI to generate the application from scratch, I utilized Claude Code strictly as a force multiplier while maintaining complete architectural control.
 
 Drawing on my background leading UI engineering and full-stack development, I structured this project around a rigorous spec-driven approach:
 
-* **Iterative System Design:** Rather than solo-authoring the architecture in a vacuum, I treated Claude Code as an architectural sounding board. Through rigorous back-and-forth iteration, I directed the AI to help me fine-tune the component hierarchy, state management, and local-first data flow. This resulted in comprehensive technical specifications (available in `/docs/implementation_plan.md`) which then served as the uncompromising single source of truth for the project.
-* **Strategic Acceleration:** For established patterns and boilerplate that I have mastered over the past six years, I leveraged AI to execute my designs rapidly. The AI acted as a junior pair programmer, executing precise instructions derived from the project specs. 
-* **Intentional Hand-Coding:** For unfamiliar paradigms and the core complexities of the AI-driven recommendation engine, I intentionally hand-wrote the logic after studying primary documentation. In these areas, I utilized Claude Code strictly as a peer-reviewer to catch edge cases and optimize performance.
+- **Iterative System Design:** Rather than solo-authoring the architecture in a vacuum, I treated Claude Code as an architectural sounding board. Through rigorous back-and-forth iteration, I directed the AI to help me fine-tune the component hierarchy, state management, and local-first data flow. This resulted in comprehensive technical specifications (available in `/docs/implementation_plan.md`) which then served as the uncompromising single source of truth for the project.
+- **Strategic Acceleration:** For established patterns and boilerplate that I have mastered over the past six years, I leveraged AI to execute my designs rapidly. The AI acted as a junior pair programmer, executing precise instructions derived from the project specs.
+- **Intentional Hand-Coding:** For unfamiliar paradigms and the core complexities of the AI-driven recommendation engine, I intentionally hand-wrote the logic after studying primary documentation. In these areas, I utilized Claude Code strictly as a peer-reviewer to catch edge cases and optimize performance.
 
 ## Planned Features
 
 ### Authentication
+
 - **Multi-User Auth**: Email/password authentication with bcrypt hashing and Redis-backed session cookies.
 
 ### Foundation & Offline-First
+
 - **Game Discovery Engine**: IGDB API integration via Fastify proxy with Redis-backed caching for rate-limit protection.
 - **Local-First Storage**: Full game library in Dexie.js — browse, filter, and sort with zero connectivity.
 - **Zod Validation**: Strict typing for all external API data.
 
 ### State Resilience & Outbox Pattern
+
 - **Kanban Backlog Board**: Drag-and-drop interface (Backlog → Playing → Beaten) with optimistic UI via TanStack Query.
 - **Sync Outbox**: Event-driven outbox that syncs writes immediately when online; failed operations queue locally and flush on reconnect via tRPC mutations.
 - **"Chaos" Toggle**: UI component to simulate offline mode for testing resilience.
 
 ### Intelligence Layer (AI Orchestration)
+
 - **"Vibe" Recommender**: AI-powered drawer where users input mood and time constraints. Uses OpenAI (with Anthropic as fallback) to consider a user's backlog and games that they may not be acquainted with yet to create a "What to Play Now" list.
-- **Reasoning Cards**: Each recommendation shows *why* the AI chose it.
+- **Reasoning Cards**: Each recommendation shows _why_ the AI chose it.
 - **Strict JSON Schema**: LLM output is validated to prevent UI breakage from hallucinated data.
 
 ### Conflict Resolution & Production Readiness
+
 - **Last-Write-Wins (LWW)**: Conflict resolution using `updated_at` timestamps for multi-device sync.
 - **Virtualized Lists**: `@tanstack/react-virtual` for large game libraries.
 - **Dockerized Deployment**: Containerized services deployed via GitHub Actions CI/CD.
@@ -76,7 +81,7 @@ Drawing on my background leading UI engineering and full-stack development, I st
 
 ### Prerequisites
 
-- **Node.js** >= 22.4.1
+- **Node.js** >= 22.12.0
 - **pnpm** >= 9
 - **Docker** (for PostgreSQL and Redis)
 
@@ -105,13 +110,13 @@ The frontend will be available at `http://localhost:5173` and the API at `http:/
 
 ### Useful Commands
 
-| Command            | Description                          |
-| ------------------ | ------------------------------------ |
-| `pnpm dev`         | Start all apps in development mode   |
-| `pnpm build`       | Build all apps                       |
-| `pnpm typecheck`   | Run TypeScript type checking         |
-| `pnpm lint`        | Lint all packages                    |
-| `docker compose up -d` | Start PostgreSQL and Redis       |
+| Command                | Description                        |
+| ---------------------- | ---------------------------------- |
+| `pnpm dev`             | Start all apps in development mode |
+| `pnpm build`           | Build all apps                     |
+| `pnpm typecheck`       | Run TypeScript type checking       |
+| `pnpm lint`            | Lint all packages                  |
+| `docker compose up -d` | Start PostgreSQL and Redis         |
 
 ## Design Decisions
 

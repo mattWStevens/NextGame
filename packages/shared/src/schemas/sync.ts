@@ -1,6 +1,6 @@
-import { z } from "zod";
+import { z } from 'zod';
 
-export const SyncOperationSchema = z.enum(["create", "update", "delete"]);
+export const SyncOperationSchema = z.enum(['create', 'update', 'delete']);
 export type SyncOperation = z.infer<typeof SyncOperationSchema>;
 
 export const OutboxEntrySchema = z.object({

@@ -1,0 +1,47 @@
+datasource db {
+  provider = "postgresql"
+}
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+model User {
+    id  String @id @default(dbgenerated("gen_random_uuid()"))   @db.Uuid
+    email String @unique
+    passwordHash String
+    displayName String
+    createdAt   DateTime    @default(now())
+    updatedAt   DateTime    @updatedAt
+
+    games Game[]
+}
+
+model Game {
+    id  String @id @default(dbgenerated("gen_random_uuid()"))   @db.Uuid
+    user  User    @relation(fields: [userId], references: [id])
+    userId  String @db.Uuid
+    igdbId Int
+    title String
+    slug String
+    coverUrl String?
+    summary String?
+    genres String[] @default([])
+    platforms String[]  @default([])
+    releaseDate DateTime?
+    rating Float?
+    review String?
+    status Status
+    statusOrder Int
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+
+    @@index([userId, status])
+    @@unique([userId, igdbId])
+}
+
+enum Status {
+    backlog
+    playing
+    beaten
+}

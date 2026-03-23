@@ -1,4 +1,4 @@
-import { z } from "zod";
+import { z } from 'zod';
 
 const IgdbCoverSchema = z.object({
     id: z.number().int().positive(),
