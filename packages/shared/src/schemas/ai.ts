@@ -1,9 +1,9 @@
-import { z } from "zod";
+import { z } from 'zod';
 
 export const VibeRequestSchema = z.object({
     mood: z.string().min(1),
     availableMinutes: z.number().positive(),
-    preferredGameLength: z.enum(["short", "medium", "long", "any"]).optional(),
+    preferredGameLength: z.enum(['short', 'medium', 'long', 'any']).optional(),
     preferredGenres: z.array(z.string().min(1)).optional(),
 });
 export type VibeRequest = z.infer<typeof VibeRequestSchema>;

@@ -1,6 +1,6 @@
-import { z } from "zod";
+import { z } from 'zod';
 
-export const GameStatusSchema = z.enum(["backlog", "playing", "beaten"]);
+export const GameStatusSchema = z.enum(['backlog', 'playing', 'beaten']);
 export type GameStatus = z.infer<typeof GameStatusSchema>;
 
 export const GameSchema = z.object({

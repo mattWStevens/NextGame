@@ -37,6 +37,7 @@ There is no test runner configured yet. Linting is also a placeholder.
 ### Per-app commands
 
 Run from root using pnpm filters:
+
 ```bash
 pnpm --filter api dev     # Start only the API server
 pnpm --filter web dev     # Start only the web frontend
