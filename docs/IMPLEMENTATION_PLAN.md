@@ -92,7 +92,7 @@ NextGame is a local-first game discovery and backlog management app. The codebas
 
 ### Task 3.1: Auth Utilities & Security Hardening (COMPLETE)
 
-- Install in `apps/api`: `bcrypt` (MIT) + `@types/bcrypt`, `@fastify/cookie` (MIT), `@fastify/session` (MIT), `@fastify-extra/connect-redis` (MIT), `@fastify/rate-limit` (MIT)
+- Install in `apps/api`: `bcrypt` (MIT) + `@types/bcrypt`, `@fastify/cookie` (MIT), `@fastify/session` (MIT), `@fastify-extra/connect-redis` (MIT), `rate-limiter-flexible` (MIT)
 - Create `apps/api/src/lib/auth.ts`:
     - `hashPassword(password)` / `verifyPassword(password, hash)` using bcrypt
 - Register session and cookie plugins in `apps/api/src/server.ts`:
@@ -100,12 +100,16 @@ NextGame is a local-first game discovery and backlog management app. The codebas
     - **Store:** Redis (`RedisStore` from `@fastify-extra/connect-redis`, using the Redis client from `lib/redis.ts`). Sessions survive server restarts.
     - **Secret:** `process.env.SECURE_SESSION` — fails fast with a clear error if not set
     - **Cookie settings:** `httpOnly: true`, `secure: true` in production, `sameSite: 'lax'`
-- Configure rate limiting in `server.ts`:
-    - Auth endpoints: max 10 login attempts per minute per IP, max 5 registrations per hour per IP
+- Configure rate limiting via tRPC middleware in `apps/api/src/trpc/trpc.ts`:
+    - `RateLimiterRedis` instances (backed by existing Redis client) created as module-level singletons
+    - Per-procedure limits keyed by IP (`req.ip`): max 10 login attempts per minute, max 5 registrations per hour
+    - `limiterMiddleware` exported and applied per-procedure via `.use(limiterMiddleware)` in the auth router
+    - Procedure paths defined in `apps/api/src/paths/paths.ts` to avoid circular imports between `trpc.ts` and `auth.ts`
 - **AC:** Password hashing works, sessions stored in Redis, rate limiting active on auth endpoints
 
-### Task 3.2: Auth tRPC Procedures
+### Task 3.2: Auth tRPC Procedures (COMPLETE)
 
+- Install in `apps/api`: `@trpc/server` v11 (Fastify adapter at `@trpc/server/adapters/fastify`)
 - Create `apps/api/src/trpc/context.ts` — context factory providing `prisma`, `redis`, `session` (user from session cookie)
 - Create `apps/api/src/trpc/trpc.ts` — init tRPC with context, define `publicProcedure` and `protectedProcedure` (middleware that checks session for authenticated user)
 - Create `apps/api/src/routers/auth.ts`:
@@ -113,7 +117,11 @@ NextGame is a local-first game discovery and backlog management app. The codebas
     - `login` mutation — validate with `LoginSchema`, verify password, set session
     - `logout` mutation — destroy session
     - `me` query — return current user from session (or null)
-- **AC:** Register → login → `me` returns user; invalid credentials rejected; logout clears session
+- Create `apps/api/src/routers/index.ts` — initial `appRouter` containing only the auth router; exports `AppRouter` type
+- Update `apps/api/src/server.ts`:
+    - Remove stub `/login` and `/register` REST routes
+    - Register `fastifyTRPCPlugin` from `@trpc/server/adapters/fastify` at prefix `/api/trpc` with `appRouter` and `createContext`
+- **AC:** Register → login → `me` returns user; invalid credentials rejected; logout clears session; `/api/trpc/*` routes are live
 
 ---
 
@@ -121,15 +129,11 @@ NextGame is a local-first game discovery and backlog management app. The codebas
 
 **Goal:** Full tRPC API with auth-protected game CRUD and IGDB search with Redis caching.
 
-### Task 4.1: Register tRPC with Fastify
+### Task 4.1: Expand tRPC Router
 
-- Install in `apps/api`: `@trpc/server` v11 (Fastify adapter at `@trpc/server/adapters/fastify`)
-- Restructure `apps/api/src/server.ts`:
-    - Keep `GET /api/health` outside tRPC
-    - Register `@fastify/cookie` and `@fastify/session`
-    - Register `fastifyTRPCPlugin` at prefix `/api/trpc` with `appRouter` and `createContext`
+- Expand `apps/api/src/routers/index.ts` — add game and IGDB sub-routers to `appRouter` as they are built in Tasks 4.2 and 4.3
 - Configure `apps/api/package.json` exports: `"./routers": { "types": "./src/routers/index.ts" }` (for frontend type imports)
-- **AC:** `/api/health` works, `/api/trpc/*` routes are live
+- **AC:** `/api/health` works, all `/api/trpc/*` routes (auth, game, IGDB) are live
 
 ### Task 4.2: Game CRUD Router
 
@@ -452,7 +456,7 @@ Phase 1 (Foundation: Lint, Test, Schemas)
 | `@fastify/cookie`                                                                                       | api        | MIT        |
 | `@fastify/session`                                                                                      | api        | MIT        |
 | `@fastify-extra/connect-redis`                                                                          | api        | MIT        |
-| `@fastify/rate-limit`                                                                                   | api        | MIT        |
+| `rate-limiter-flexible`                                                                                 | api        | MIT        |
 | `@trpc/server`                                                                                          | api        | MIT        |
 | `@trpc/client`, `@trpc/react-query`                                                                     | web        | MIT        |
 | `@tanstack/react-query`, `@tanstack/react-query-devtools`                                               | web        | MIT        |

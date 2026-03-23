@@ -1,20 +1,22 @@
 import Fastify from 'fastify';
-import fastifyRateLimit from '@fastify/rate-limit';
 import { APP_NAME } from '@nextgame/shared';
 import { RedisStore } from '@fastify-extra/connect-redis';
 import fastifySession from '@fastify/session';
 import { redis } from './lib/redis';
 import fastifyCookie from '@fastify/cookie';
+import { fastifyTRPCPlugin } from '@trpc/server/adapters/fastify';
+import { TRPCError } from '@trpc/server';
+import { appRouter } from './routers';
+import { createContext } from './trpc/context';
 
 export const server = Fastify({ logger: true });
 const redisStore = new RedisStore({ client: redis });
 
-server.register(fastifyRateLimit, { global: false });
 server.register(fastifyCookie);
 
 server.register(fastifySession, {
     secret:
-        process.env.SECURE_SESSION ??
+        process.env.SESSION_SECRET ??
         (() => {
             throw new Error('SECURE_SESSION is not set');
         })(),
@@ -26,37 +28,16 @@ server.register(fastifySession, {
     },
 });
 
-server.post(
-    '/login',
-    {
-        config: {
-            rateLimit: {
-                max: 10,
-                timeWindow: '1 minute',
-            },
+server.register(fastifyTRPCPlugin, {
+    prefix: '/api/trpc',
+    trpcOptions: {
+        router: appRouter,
+        createContext,
+        onError: ({ path, error }: { path: string | undefined; error: TRPCError }) => {
+            console.error({ path }, error);
         },
     },
-    () => {
-        // Login functionality to be implemented.
-        console.log('login');
-    },
-);
-
-server.post(
-    '/register',
-    {
-        config: {
-            rateLimit: {
-                max: 5,
-                timeWindow: '1 hour',
-            },
-        },
-    },
-    () => {
-        // Register functionality to be implemented.
-        console.log('register');
-    },
-);
+});
 
 server.get('/api/health', () => {
     return { status: 'ok', app: APP_NAME };
