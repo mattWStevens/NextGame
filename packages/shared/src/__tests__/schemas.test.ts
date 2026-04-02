@@ -2,7 +2,7 @@ import { describe, it, expect } from 'vitest';
 import { UserSchema, type User, LoginSchema, RegisterSchema } from '../schemas/user';
 import { GameStatusSchema, GameSchema, type Game } from '../schemas/game';
 import { IgdbGameSchema, IgdbSearchResultSchema } from '../schemas/igdb';
-import { SyncOperationSchema, OutboxEntrySchema } from '../schemas/sync';
+import { SyncOperations, OutboxEntrySchema } from '../schemas/sync';
 import { VibeRequestSchema, RecommendationSchema, VibeResponseSchema } from '../schemas/ai';
 
 describe('UserSchema', () => {
@@ -591,73 +591,76 @@ describe('IgdbSearchResultSchema', () => {
     });
 });
 
-describe('SyncOperationSchema', () => {
-    describe('valid inputs', () => {
-        it.each(['create', 'update', 'delete'])("should accept '%s'", (op) => {
-            expect(SyncOperationSchema.safeParse(op).success).toBe(true);
-        });
-    });
-
-    describe('invalid inputs', () => {
-        it("should reject 'upsert'", () => {
-            expect(SyncOperationSchema.safeParse('upsert').success).toBe(false);
-        });
-
-        it("should reject 'read'", () => {
-            expect(SyncOperationSchema.safeParse('read').success).toBe(false);
-        });
-    });
-});
-
 describe('OutboxEntrySchema', () => {
-    const validEntry = {
+    const baseEntry = {
         id: '59828e85-645b-4364-897d-4299479b183a',
         entityId: '71928e85-645b-4364-897d-4299479b183b',
-        operation: 'create',
         synced: false,
         createdAt: new Date().toISOString(),
+        clientUpdatedAt: new Date().toISOString(),
+    };
+
+    const validDeleteEntry = { ...baseEntry, operation: SyncOperations.delete };
+    const validCreateEntry = {
+        ...baseEntry,
+        operation: SyncOperations.create,
+        payload: { id: 1942, name: 'The Witcher 3: Wild Hunt', slug: 'the-witcher-3-wild-hunt' },
+    };
+    const validUpdateEntry = {
+        ...baseEntry,
+        operation: SyncOperations.update,
+        payload: { id: '59828e85-645b-4364-897d-4299479b183a', status: 'playing' },
     };
 
     describe('valid inputs', () => {
-        it('should parse an entry without an optional payload', () => {
-            expect(OutboxEntrySchema.safeParse(validEntry).success).toBe(true);
+        it('should parse a valid delete entry (no payload)', () => {
+            expect(OutboxEntrySchema.safeParse(validDeleteEntry).success).toBe(true);
         });
 
-        it('should parse an entry with a payload', () => {
-            const result = OutboxEntrySchema.safeParse({
-                ...validEntry,
-                payload: { title: 'The Witcher 3', status: 'backlog' },
-            });
-            expect(result.success).toBe(true);
+        it('should parse a valid create entry with an IgdbGame payload', () => {
+            expect(OutboxEntrySchema.safeParse(validCreateEntry).success).toBe(true);
+        });
+
+        it('should parse a valid update entry with a GameUpdate payload', () => {
+            expect(OutboxEntrySchema.safeParse(validUpdateEntry).success).toBe(true);
         });
 
         it('should parse a synced entry', () => {
-            expect(OutboxEntrySchema.safeParse({ ...validEntry, synced: true }).success).toBe(true);
+            expect(
+                OutboxEntrySchema.safeParse({ ...validDeleteEntry, synced: true }).success,
+            ).toBe(true);
         });
     });
 
     describe('invalid inputs', () => {
         it('should reject an invalid operation', () => {
-            const result = OutboxEntrySchema.safeParse({
-                ...validEntry,
-                operation: 'upsert',
-            });
+            const result = OutboxEntrySchema.safeParse({ ...baseEntry, operation: 'upsert' });
             expect(result.success).toBe(false);
-            expect(result.error?.issues[0].path).toContain('operation');
+        });
+
+        it('should reject a create entry missing its payload', () => {
+            const { payload: _payload, ...rest } = validCreateEntry;
+            const result = OutboxEntrySchema.safeParse(rest);
+            expect(result.success).toBe(false);
+            expect(result.error?.issues[0].path).toContain('payload');
+        });
+
+        it('should reject an update entry missing its payload', () => {
+            const { payload: _payload, ...rest } = validUpdateEntry;
+            const result = OutboxEntrySchema.safeParse(rest);
+            expect(result.success).toBe(false);
+            expect(result.error?.issues[0].path).toContain('payload');
         });
 
         it('should reject a non-boolean synced', () => {
-            const result = OutboxEntrySchema.safeParse({
-                ...validEntry,
-                synced: 'false',
-            });
+            const result = OutboxEntrySchema.safeParse({ ...validDeleteEntry, synced: 'false' });
             expect(result.success).toBe(false);
             expect(result.error?.issues[0].path).toContain('synced');
         });
 
         it('should reject an invalid entityId', () => {
             const result = OutboxEntrySchema.safeParse({
-                ...validEntry,
+                ...validDeleteEntry,
                 entityId: 'not-a-uuid',
             });
             expect(result.success).toBe(false);
@@ -665,10 +668,17 @@ describe('OutboxEntrySchema', () => {
         });
 
         it('should reject a missing createdAt', () => {
-            const { createdAt: _createdAt, ...rest } = validEntry;
+            const { createdAt: _createdAt, ...rest } = validDeleteEntry;
             const result = OutboxEntrySchema.safeParse(rest);
             expect(result.success).toBe(false);
             expect(result.error?.issues[0].path).toContain('createdAt');
+        });
+
+        it('should reject a missing clientUpdatedAt', () => {
+            const { clientUpdatedAt: _clientUpdatedAt, ...rest } = validDeleteEntry;
+            const result = OutboxEntrySchema.safeParse(rest);
+            expect(result.success).toBe(false);
+            expect(result.error?.issues[0].path).toContain('clientUpdatedAt');
         });
     });
 });

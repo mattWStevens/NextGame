@@ -3,6 +3,7 @@ import { hashPassword, verifyPassword } from '../lib/auth';
 import { router, publicProcedure, protectedProcedure, limiterMiddleware } from '../trpc/trpc';
 import { RegisterSchema, LoginSchema } from '@nextgame/shared';
 import { handlePrismaError } from '../lib/prismaError';
+import { UNAUTHORIZED_ERROR_CODE } from '../trpc/errorConstants';
 
 export const authRouter = router({
     register: publicProcedure
@@ -57,10 +58,10 @@ export const authRouter = router({
 
                     return sessionUser;
                 } else {
-                    throw new TRPCError({ code: 'UNAUTHORIZED' });
+                    throw new TRPCError({ code: UNAUTHORIZED_ERROR_CODE });
                 }
             } else {
-                throw new TRPCError({ code: 'UNAUTHORIZED' });
+                throw new TRPCError({ code: UNAUTHORIZED_ERROR_CODE });
             }
         }),
     logout: protectedProcedure.mutation(async (options) => {

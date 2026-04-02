@@ -140,7 +140,7 @@ NextGame is a local-first game discovery and backlog management app. The codebas
 - Create `apps/api/src/routers/game.ts` (all procedures use `protectedProcedure`, scoped to `ctx.session.userId`):
     - `list` query — all games for current user, ordered by status + statusOrder
     - `getById` query — single game by ID (must belong to user)
-    - `create` mutation — from IGDB data + initial status "backlog", validated with Zod
+    - `create` mutation — from IGDB data + initial status "backlog", validated with Zod; `statusOrder` set to `MAX(statusOrder) + 1000` for the user's backlog column (sparse increments to allow gap-free reordering); defaults to `0` if the column is empty
     - `update` mutation — partial update (status, statusOrder, rating, review)
     - `delete` mutation — hard delete by ID
     - `reorder` mutation — batch `{ id, statusOrder }[]` update in a transaction
