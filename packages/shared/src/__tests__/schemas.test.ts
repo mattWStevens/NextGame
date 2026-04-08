@@ -548,12 +548,12 @@ describe('IgdbGameSchema', () => {
             expect(result.error?.issues[0].path).toContain('rating');
         });
 
-        it('should reject a cover missing image_id', () => {
+        it('should accept a cover missing image_id (not always returned by IGDB)', () => {
             const result = IgdbGameSchema.safeParse({
                 ...validIgdbGame,
                 cover: { id: 101, url: '//images.igdb.com/co1wyy.jpg' },
             });
-            expect(result.success).toBe(false);
+            expect(result.success).toBe(true);
         });
     });
 });

@@ -129,13 +129,13 @@ NextGame is a local-first game discovery and backlog management app. The codebas
 
 **Goal:** Full tRPC API with auth-protected game CRUD and IGDB search with Redis caching.
 
-### Task 4.1: Expand tRPC Router
+### Task 4.1: Expand tRPC Router (COMPLETE)
 
 - Expand `apps/api/src/routers/index.ts` — add game and IGDB sub-routers to `appRouter` as they are built in Tasks 4.2 and 4.3
 - Configure `apps/api/package.json` exports: `"./routers": { "types": "./src/routers/index.ts" }` (for frontend type imports)
 - **AC:** `/api/health` works, all `/api/trpc/*` routes (auth, game, IGDB) are live
 
-### Task 4.2: Game CRUD Router
+### Task 4.2: Game CRUD Router (COMPLETE)
 
 - Create `apps/api/src/routers/game.ts` (all procedures use `protectedProcedure`, scoped to `ctx.session.userId`):
     - `list` query — all games for current user, ordered by status + statusOrder
@@ -148,7 +148,7 @@ NextGame is a local-first game discovery and backlog management app. The codebas
 - Create `apps/api/src/routers/index.ts` — combines all sub-routers into `appRouter`, exports `AppRouter` type
 - **AC:** All CRUD ops work, scoped to authenticated user, validated with Zod
 
-### Task 4.3: IGDB Integration with Redis Caching
+### Task 4.3: IGDB Integration with Redis Caching (COMPLETE)
 
 - Create `apps/api/src/lib/igdb.ts`:
     - Twitch OAuth2 token acquisition (`client_credentials` grant), cached in Redis with TTL
