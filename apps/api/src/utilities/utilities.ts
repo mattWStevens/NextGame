@@ -21,7 +21,7 @@ export const prismaGameToGame = (game: PrismaGame): Game => ({
     userId: game.userId,
     igdbId: game.igdbId,
     title: game.title,
-    slug: game.slug,
+    slug: game.slug ?? undefined,
     status: game.status,
     statusOrder: game.statusOrder,
     createdAt: game.createdAt.toISOString(),
