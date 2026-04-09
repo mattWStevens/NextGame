@@ -12,7 +12,7 @@ export const GameSchema = z.object({
     clientId: z.uuid().optional(),
     igdbId: z.number().int().positive(),
     title: z.string().min(1),
-    slug: z.string().min(1),
+    slug: z.string().min(1).optional(),
     coverUrl: z.url().optional(),
     summary: z.string().optional(),
     genres: z.array(z.string().min(1)).optional(),
