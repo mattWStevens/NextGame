@@ -160,7 +160,7 @@ NextGame is a local-first game discovery and backlog management app. The codebas
 - Add `igdb: igdbRouter` to `appRouter`
 - **AC:** IGDB search returns validated data, responses cached in Redis, rate limits respected
 
-### Task 4.4: API Tests
+### Task 4.4: API Tests (COMPLETE)
 
 - Create `apps/api/src/__tests__/game.test.ts` — CRUD via tRPC caller (use `createCallerFactory(appRouter)` — tRPC v11 API), conflict resolution in bulkSync
 - Create `apps/api/src/__tests__/igdb.test.ts` — mocked IGDB calls (use `msw`), verify caching
