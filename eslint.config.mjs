@@ -22,9 +22,7 @@ export default tseslint.config(
         files: ['**/*.ts', '**/*.tsx'],
         languageOptions: {
             parserOptions: {
-                projectService: {
-                    allowDefaultProject: ['apps/api/prisma.config.ts'],
-                },
+                projectService: true,
                 tsconfigRootDir: import.meta.dirname,
             },
         },
@@ -86,6 +84,12 @@ export default tseslint.config(
                 },
             ],
         },
+    },
+
+    // Disable type-aware rules for Prisma config (outside tsconfig rootDir)
+    {
+        files: ['apps/api/prisma.config.ts'],
+        extends: [tseslint.configs.disableTypeChecked],
     },
 
     // Disable ESLint rules that conflict with Prettier (must be last)
