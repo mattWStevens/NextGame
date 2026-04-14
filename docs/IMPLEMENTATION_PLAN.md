@@ -176,7 +176,7 @@ NextGame is a local-first game discovery and backlog management app. The codebas
 - Server refuses to start with clear error messages if required vars are missing
 - **AC:** Server fails fast with descriptive errors for missing required env vars
 
-### Task 4.6: CI Service Containers
+### Task 4.6: CI Service Containers (COMPLETE)
 
 - Update `.github/workflows/ci.yml`:
     - Add PostgreSQL 16 + Redis 7 service containers
