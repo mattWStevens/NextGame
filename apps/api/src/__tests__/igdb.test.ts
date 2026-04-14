@@ -23,8 +23,8 @@ import { appRouter } from '../routers/index.js';
 import { redis } from '../lib/redis.js';
 import type { Context } from '../trpc/context.js';
 
-const TOKEN_URL = 'https://test.id.twitch.tv/oauth2/token';
-const GAMES_URL = 'https://test.api.igdb.com/v4/games';
+const TOKEN_URL = 'https://id.twitch.tv/oauth2/token';
+const GAMES_URL = 'https://api.igdb.com/v4/games';
 const ACCESS_TOKEN = 'test-access-token';
 const IGDB_ID = 1942;
 
@@ -53,10 +53,6 @@ const server = setupServer(
 );
 
 beforeAll(() => {
-    process.env.IGDB_TOKEN_ENDPOINT = TOKEN_URL;
-    process.env.IGDB_GAMES_ENDPOINT = GAMES_URL;
-    process.env.IGDB_CLIENT_ID = 'test-client-id';
-    process.env.IGDB_CLIENT_SECRET = 'test-client-secret';
     server.listen({ onUnhandledRequest: 'error' });
 });
 

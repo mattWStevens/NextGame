@@ -167,16 +167,16 @@ NextGame is a local-first game discovery and backlog management app. The codebas
 - Create `apps/api/src/__tests__/auth.test.ts` — register, login, protected route access
 - **AC:** All tests pass, run in CI
 
-### Task 4.5: Environment Validation
+### Task 4.5: Environment Validation (COMPLETE)
 
 - Create `apps/api/src/lib/env.ts` — Zod schema validating all environment variables at server startup
-    - **Required:** `DATABASE_URL`, `REDIS_URL`
-    - **Optional:** `IGDB_CLIENT_ID`, `IGDB_CLIENT_SECRET`, `OPENAI_API_KEY`, `ANTHROPIC_API_KEY`, `API_PORT`
+    - **Required:** `DATABASE_URL`, `REDIS_URL`, `IGDB_CLIENT_ID`, `IGDB_CLIENT_SECRET`, `SESSION_SECRET` (min 32 chars)
+    - **Optional:** `OPENAI_API_KEY`, `ANTHROPIC_API_KEY`, `API_PORT`
 - Import and validate in `server.ts` before any server initialization
 - Server refuses to start with clear error messages if required vars are missing
 - **AC:** Server fails fast with descriptive errors for missing required env vars
 
-### Task 4.6: CI Service Containers
+### Task 4.6: CI Service Containers (COMPLETE)
 
 - Update `.github/workflows/ci.yml`:
     - Add PostgreSQL 16 + Redis 7 service containers

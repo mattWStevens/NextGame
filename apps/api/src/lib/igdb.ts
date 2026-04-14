@@ -4,6 +4,7 @@ import {
     IgdbGameSchema,
     IgdbSearchResultSchema,
 } from '@nextgame/shared';
+import { env } from './env';
 import { redis } from './redis';
 
 const ACCESS_TOKEN_CACHE_KEY = 'igdb:access-token';
@@ -21,6 +22,8 @@ const GAME_FIELDS =
     'id,name,summary,slug,first_release_date,rating,cover.url,genres.name,platforms.name';
 const DEFAULT_IMG_SIZE = 't_thumb';
 const LARGER_IMG_SIZE = 't_cover_big';
+const IGDB_GAMES_ENDPOINT = 'https://api.igdb.com/v4/games';
+const IGDB_TOKEN_ENDPOINT = 'https://id.twitch.tv/oauth2/token';
 
 const makeGameImgLarger = (game: IgdbGame) => {
     const updatedGame = { ...game };
@@ -43,11 +46,11 @@ const getAccessToken = async () => {
 
     if (!cachedAccessToken) {
         const requestParams = new URLSearchParams();
-        requestParams.append(CLIENT_ID_KEY, process.env.IGDB_CLIENT_ID ?? '');
-        requestParams.append(CLIENT_SECRET_KEY, process.env.IGDB_CLIENT_SECRET ?? '');
+        requestParams.append(CLIENT_ID_KEY, env.IGDB_CLIENT_ID);
+        requestParams.append(CLIENT_SECRET_KEY, env.IGDB_CLIENT_SECRET);
         requestParams.append(GRANT_TYPE_KEY, GRANT_TYPE_VALUE);
 
-        const response = await fetch(process.env.IGDB_TOKEN_ENDPOINT ?? '', {
+        const response = await fetch(IGDB_TOKEN_ENDPOINT, {
             method: 'POST',
             headers: {
                 'Content-type': 'application/x-www-form-urlencoded',
@@ -85,10 +88,10 @@ export const getGameById = async (igdbId: number): Promise<IgdbGame | undefined>
     if (!cachedGame) {
         const accessToken = await getAccessToken();
 
-        const response = await fetch(process.env.IGDB_GAMES_ENDPOINT ?? '', {
+        const response = await fetch(IGDB_GAMES_ENDPOINT, {
             method: 'POST',
             headers: {
-                'Client-ID': process.env.IGDB_CLIENT_ID ?? '',
+                'Client-ID': env.IGDB_CLIENT_ID,
                 Authorization: `Bearer ${accessToken}`,
             },
             body: `fields ${GAME_FIELDS}; where id = ${idString};`,
@@ -136,10 +139,10 @@ export const searchGames = async (query: string, limit?: number) => {
         const limitValue = limit !== undefined ? limit.toString() : DEFAULT_LIMIT;
         const body = `search "${normalizedQuery}"; fields ${GAME_FIELDS}; limit ${limitValue};`;
 
-        const response = await fetch(process.env.IGDB_GAMES_ENDPOINT ?? '', {
+        const response = await fetch(IGDB_GAMES_ENDPOINT, {
             method: 'POST',
             headers: {
-                'Client-ID': process.env.IGDB_CLIENT_ID ?? '',
+                'Client-ID': env.IGDB_CLIENT_ID,
                 Authorization: `Bearer ${accessToken}`,
             },
             body,
