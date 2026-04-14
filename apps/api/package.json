@@ -9,6 +9,7 @@
         "start": "node dist/server.js",
         "typecheck": "tsc --noEmit",
         "test": "vitest run",
+        "test:integration": "vitest run --config vitest.integration.config.ts",
         "lint": "eslint src/",
         "db:generate": "prisma generate",
         "db:migrate": "prisma migrate dev",
@@ -30,11 +31,13 @@
         "fastify": "^4.28.0",
         "pg": "^8.20.0",
         "rate-limiter-flexible": "^10.0.1",
-        "redis": "^5.11.0"
+        "redis": "^5.11.0",
+        "zod": "^4.0.0"
     },
     "devDependencies": {
         "@types/node": "^20.14.0",
         "@types/pg": "^8.18.0",
+        "msw": "^2.13.2",
         "prisma": "^7.4.2",
         "tsx": "^4.16.0",
         "typescript": "^5.4.0"

@@ -129,18 +129,18 @@ NextGame is a local-first game discovery and backlog management app. The codebas
 
 **Goal:** Full tRPC API with auth-protected game CRUD and IGDB search with Redis caching.
 
-### Task 4.1: Expand tRPC Router
+### Task 4.1: Expand tRPC Router (COMPLETE)
 
 - Expand `apps/api/src/routers/index.ts` — add game and IGDB sub-routers to `appRouter` as they are built in Tasks 4.2 and 4.3
 - Configure `apps/api/package.json` exports: `"./routers": { "types": "./src/routers/index.ts" }` (for frontend type imports)
 - **AC:** `/api/health` works, all `/api/trpc/*` routes (auth, game, IGDB) are live
 
-### Task 4.2: Game CRUD Router
+### Task 4.2: Game CRUD Router (COMPLETE)
 
 - Create `apps/api/src/routers/game.ts` (all procedures use `protectedProcedure`, scoped to `ctx.session.userId`):
     - `list` query — all games for current user, ordered by status + statusOrder
     - `getById` query — single game by ID (must belong to user)
-    - `create` mutation — from IGDB data + initial status "backlog", validated with Zod
+    - `create` mutation — from IGDB data + initial status "backlog", validated with Zod; `statusOrder` set to `MAX(statusOrder) + 1000` for the user's backlog column (sparse increments to allow gap-free reordering); defaults to `0` if the column is empty
     - `update` mutation — partial update (status, statusOrder, rating, review)
     - `delete` mutation — hard delete by ID
     - `reorder` mutation — batch `{ id, statusOrder }[]` update in a transaction
@@ -148,7 +148,7 @@ NextGame is a local-first game discovery and backlog management app. The codebas
 - Create `apps/api/src/routers/index.ts` — combines all sub-routers into `appRouter`, exports `AppRouter` type
 - **AC:** All CRUD ops work, scoped to authenticated user, validated with Zod
 
-### Task 4.3: IGDB Integration with Redis Caching
+### Task 4.3: IGDB Integration with Redis Caching (COMPLETE)
 
 - Create `apps/api/src/lib/igdb.ts`:
     - Twitch OAuth2 token acquisition (`client_credentials` grant), cached in Redis with TTL
@@ -160,23 +160,23 @@ NextGame is a local-first game discovery and backlog management app. The codebas
 - Add `igdb: igdbRouter` to `appRouter`
 - **AC:** IGDB search returns validated data, responses cached in Redis, rate limits respected
 
-### Task 4.4: API Tests
+### Task 4.4: API Tests (COMPLETE)
 
 - Create `apps/api/src/__tests__/game.test.ts` — CRUD via tRPC caller (use `createCallerFactory(appRouter)` — tRPC v11 API), conflict resolution in bulkSync
 - Create `apps/api/src/__tests__/igdb.test.ts` — mocked IGDB calls (use `msw`), verify caching
 - Create `apps/api/src/__tests__/auth.test.ts` — register, login, protected route access
 - **AC:** All tests pass, run in CI
 
-### Task 4.5: Environment Validation
+### Task 4.5: Environment Validation (COMPLETE)
 
 - Create `apps/api/src/lib/env.ts` — Zod schema validating all environment variables at server startup
-    - **Required:** `DATABASE_URL`, `REDIS_URL`
-    - **Optional:** `IGDB_CLIENT_ID`, `IGDB_CLIENT_SECRET`, `OPENAI_API_KEY`, `ANTHROPIC_API_KEY`, `API_PORT`
+    - **Required:** `DATABASE_URL`, `REDIS_URL`, `IGDB_CLIENT_ID`, `IGDB_CLIENT_SECRET`, `SESSION_SECRET` (min 32 chars)
+    - **Optional:** `OPENAI_API_KEY`, `ANTHROPIC_API_KEY`, `API_PORT`
 - Import and validate in `server.ts` before any server initialization
 - Server refuses to start with clear error messages if required vars are missing
 - **AC:** Server fails fast with descriptive errors for missing required env vars
 
-### Task 4.6: CI Service Containers
+### Task 4.6: CI Service Containers (COMPLETE)
 
 - Update `.github/workflows/ci.yml`:
     - Add PostgreSQL 16 + Redis 7 service containers

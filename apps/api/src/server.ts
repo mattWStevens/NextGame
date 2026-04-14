@@ -1,4 +1,5 @@
 import Fastify from 'fastify';
+import { env } from './lib/env';
 import { APP_NAME } from '@nextgame/shared';
 import { RedisStore } from '@fastify-extra/connect-redis';
 import fastifySession from '@fastify/session';
@@ -15,14 +16,10 @@ const redisStore = new RedisStore({ client: redis });
 server.register(fastifyCookie);
 
 server.register(fastifySession, {
-    secret:
-        process.env.SESSION_SECRET ??
-        (() => {
-            throw new Error('SECURE_SESSION is not set');
-        })(),
+    secret: env.SESSION_SECRET,
     store: redisStore,
     cookie: {
-        secure: process.env.NODE_ENV === 'production' ? true : 'auto',
+        secure: env.NODE_ENV === 'production' ? true : 'auto',
         httpOnly: true,
         sameSite: 'lax',
     },
@@ -45,7 +42,7 @@ server.get('/api/health', () => {
 
 const start = async () => {
     try {
-        const port = Number(process.env.API_PORT) || 3001;
+        const port = env.API_PORT;
         await server.listen({ port, host: '0.0.0.0' });
         console.log(`🚀 ${APP_NAME} API running on http://localhost:${String(port)}`);
     } catch (err) {

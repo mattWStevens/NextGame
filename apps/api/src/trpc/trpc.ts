@@ -3,6 +3,11 @@ import { RateLimiterRedis } from 'rate-limiter-flexible';
 import { Context } from './context';
 import { redis } from '../lib';
 import { LOGIN_PATH, REGISTER_PATH } from '../paths/paths';
+import {
+    UNAUTHORIZED_ERROR_CODE,
+    TOO_MANY_REQUESTS_ERROR_CODE,
+    TOO_MANY_REQUESTS_ERROR_MESSAGE,
+} from './errorConstants';
 
 const t = initTRPC.context<Context>().create();
 
@@ -14,7 +19,7 @@ export const protectedProcedure = publicProcedure.use((opts) => {
     const { ctx } = opts;
 
     if (!ctx.user) {
-        throw new TRPCError({ code: 'UNAUTHORIZED' });
+        throw new TRPCError({ code: UNAUTHORIZED_ERROR_CODE });
     }
 
     return opts.next({
@@ -77,8 +82,8 @@ export const limiterMiddleware = t.middleware(async ({ ctx, path, next }) => {
         await limiter.consume(key);
     } catch {
         throw new TRPCError({
-            code: 'TOO_MANY_REQUESTS',
-            message: 'Too many requests',
+            code: TOO_MANY_REQUESTS_ERROR_CODE,
+            message: TOO_MANY_REQUESTS_ERROR_MESSAGE,
         });
     }
     return next();

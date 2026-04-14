@@ -23,7 +23,10 @@ export default tseslint.config(
         languageOptions: {
             parserOptions: {
                 projectService: {
-                    allowDefaultProject: ['apps/api/prisma.config.ts'],
+                    // Vitest config files sit outside tsconfig.json's rootDir — point them
+                    // at tsconfig.node.json so they still get full type-checking.
+                    allowDefaultProject: ['apps/api/vitest*.config.ts'],
+                    defaultProject: 'apps/api/tsconfig.node.json',
                 },
                 tsconfigRootDir: import.meta.dirname,
             },
@@ -86,6 +89,12 @@ export default tseslint.config(
                 },
             ],
         },
+    },
+
+    // Disable type-aware rules for Prisma config (outside tsconfig rootDir)
+    {
+        files: ['apps/api/prisma.config.ts'],
+        extends: [tseslint.configs.disableTypeChecked],
     },
 
     // Disable ESLint rules that conflict with Prettier (must be last)
