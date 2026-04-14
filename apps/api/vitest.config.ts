@@ -4,7 +4,7 @@ export default defineConfig({
     test: {
         environment: 'node',
         passWithNoTests: true,
-        exclude: ['**/node_modules/**', 'src/__tests__/integration/**'],
+        exclude: ['**/node_modules/**', 'src/__tests__/integration/**', 'dist/__tests__/integration/**'],
         env: {
             DATABASE_URL: 'postgresql://postgres:postgres@localhost:5432/nextgame_test',
             REDIS_URL: 'redis://localhost:6379',
