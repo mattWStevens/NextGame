@@ -22,7 +22,12 @@ export default tseslint.config(
         files: ['**/*.ts', '**/*.tsx'],
         languageOptions: {
             parserOptions: {
-                projectService: true,
+                projectService: {
+                    // Vitest config files sit outside tsconfig.json's rootDir — point them
+                    // at tsconfig.node.json so they still get full type-checking.
+                    allowDefaultProject: ['apps/api/vitest*.config.ts'],
+                    defaultProject: 'apps/api/tsconfig.node.json',
+                },
                 tsconfigRootDir: import.meta.dirname,
             },
         },

@@ -9,6 +9,7 @@
         "start": "node dist/server.js",
         "typecheck": "tsc --noEmit",
         "test": "vitest run",
+        "test:integration": "vitest run --config vitest.integration.config.ts",
         "lint": "eslint src/",
         "db:generate": "prisma generate",
         "db:migrate": "prisma migrate dev",
