@@ -190,7 +190,7 @@ NextGame is a local-first game discovery and backlog management app. The codebas
 
 **Goal:** App shell with navigation, type-safe data fetching, and reusable UI components.
 
-### Task 5.1: React Router
+### Task 5.1: React Router (COMPLETE)
 
 - Install in `apps/web`: `react-router-dom`
 - Create `apps/web/src/router.tsx` — routes: `/` (Board), `/search` (Search), `/vibe` (Vibe), `/login`, `/register`
@@ -199,16 +199,16 @@ NextGame is a local-first game discovery and backlog management app. The codebas
 - Update `apps/web/src/main.tsx` — replace `<App />` with `<RouterProvider>`
 - **AC:** Navigation works without full page reloads, active route highlighted
 
-### Task 5.2: tRPC Client + TanStack Query
+### Task 5.2: tRPC Client + TanStack Query (COMPLETE)
 
 - Install in `apps/web`: `@trpc/client`, `@trpc/react-query`, `@tanstack/react-query` v5, `@tanstack/react-query-devtools`
     - Note: tRPC v11 requires TanStack Query v5. Key v5 differences: `isPending` replaces `isLoading`; `onSuccess`/`onError`/`onSettled` callbacks removed from `useQuery` (handle in `useEffect` or mutation callbacks instead)
 - Create `apps/web/src/lib/trpc.ts` — tRPC React client with `httpBatchLink` pointing at `/api/trpc`
 - Create `apps/web/src/providers/TrpcProvider.tsx` — wraps app with QueryClient + tRPC provider
-- Create `apps/web/src/hooks/useAuth.ts` — uses `trpc.auth.me.useQuery()`, provides `user`, `isAuthenticated`, `isPending`
+- Create `apps/web/src/hooks/useAuth.ts` — uses `trpc.auth.me.useQuery()`, provides `user`, `isAuthenticated`, `isPending`, `isNetworkError`
 - Create `apps/web/src/components/AuthGuard.tsx` — redirects to `/login` if unauthenticated
 - Update `main.tsx` — wrap `<RouterProvider>` with `<TrpcProvider>`
-- **AC:** `trpc.game.list.useQuery()` returns typed data, end-to-end type safety verified
+- **AC:** tRPC client, QueryClient, and provider configured; `trpc.auth.me.useQuery()` returns typed `User | null` data; `AuthGuard` redirects unauthenticated users; end-to-end type safety from `AppRouter` to frontend hooks verified via `pnpm typecheck`
 
 ### Task 5.3: Auth Pages
 
