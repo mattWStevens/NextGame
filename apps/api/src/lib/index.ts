@@ -5,3 +5,4 @@
  */
 export * from './db';
 export * from './redis';
+export type { AppRouter } from '../routers/index';
