@@ -286,6 +286,12 @@ describe('LoginSchema', () => {
             expect(result.success).toBe(false);
             expect(result.error?.issues[0].path).toContain('email');
         });
+
+        it('should reject an empty password', () => {
+            const result = LoginSchema.safeParse({ email: 'joe.smith@gmail.com', password: '' });
+            expect(result.success).toBe(false);
+            expect(result.error?.issues[0].path).toContain('password');
+        });
     });
 });
 

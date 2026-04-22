@@ -210,7 +210,7 @@ NextGame is a local-first game discovery and backlog management app. The codebas
 - Update `main.tsx` — wrap `<RouterProvider>` with `<TrpcProvider>`
 - **AC:** tRPC client, QueryClient, and provider configured; `trpc.auth.me.useQuery()` returns typed `User | null` data; `AuthGuard` redirects unauthenticated users; end-to-end type safety from `AppRouter` to frontend hooks verified via `pnpm typecheck`
 
-### Task 5.3: Auth Pages
+### Task 5.3: Auth Pages (COMPLETE)
 
 - Create `apps/web/src/pages/LoginPage.tsx` — email + password form, calls `trpc.auth.login.useMutation()`, redirects to `/` on success
 - Create `apps/web/src/pages/RegisterPage.tsx` — email + password + displayName form, calls `trpc.auth.register.useMutation()`, redirects to `/`
