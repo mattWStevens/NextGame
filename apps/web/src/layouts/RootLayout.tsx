@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { NavLink, Outlet, useNavigate } from 'react-router-dom';
 import { NAV_LINKS, ROUTES } from '../lib/routes';
 import { trpc } from '../lib/trpc';
+import { useToast } from '../hooks/useToast';
 
 function NavItems({ onNavigate }: { onNavigate?: () => void }) {
     return (
@@ -32,9 +33,10 @@ export default function RootLayout() {
     const [menuOpen, setMenuOpen] = useState(false);
     const utils = trpc.useUtils();
     const navigate = useNavigate();
+    const { toast } = useToast();
     const logoutMutation = trpc.auth.logout.useMutation({
-        onError: (error) => {
-            console.error(error); // TODO: Replace with Toast/Alert once component is added.
+        onError: () => {
+            toast('Sign out failed. Please try again.', { variant: 'error' });
         },
         onSuccess: () => {
             void utils.auth.me.reset();
