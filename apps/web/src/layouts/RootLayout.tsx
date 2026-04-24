@@ -2,6 +2,8 @@ import { useState } from 'react';
 import { NavLink, Outlet, useNavigate } from 'react-router-dom';
 import { NAV_LINKS, ROUTES } from '../lib/routes';
 import { trpc } from '../lib/trpc';
+import { useToast } from '../hooks/useToast';
+import { Button } from '../components/ui/Button';
 
 function NavItems({ onNavigate }: { onNavigate?: () => void }) {
     return (
@@ -32,9 +34,10 @@ export default function RootLayout() {
     const [menuOpen, setMenuOpen] = useState(false);
     const utils = trpc.useUtils();
     const navigate = useNavigate();
+    const { toast } = useToast();
     const logoutMutation = trpc.auth.logout.useMutation({
-        onError: (error) => {
-            console.error(error); // TODO: Replace with Toast/Alert once component is added.
+        onError: () => {
+            toast('Sign out failed. Please try again.', { variant: 'error' });
         },
         onSuccess: () => {
             void utils.auth.me.reset();
@@ -59,24 +62,28 @@ export default function RootLayout() {
                         </nav>
                     </div>
                     <div className="hidden items-center gap-3 md:flex">
-                        <button
+                        <Button
+                            variant="ghost"
+                            size="sm"
                             type="button"
                             onClick={handleSignOut}
-                            className="rounded-md px-3 py-1.5 text-sm font-medium text-gray-400 transition-colors hover:bg-gray-800 hover:text-white"
+                            className="text-sm"
                         >
                             Sign out
-                        </button>
+                        </Button>
                     </div>
 
                     {/* Hamburger button — mobile only */}
-                    <button
+                    <Button
+                        variant="ghost"
+                        size="sm"
                         type="button"
                         aria-label={menuOpen ? 'Close menu' : 'Open menu'}
                         aria-expanded={menuOpen}
                         onClick={() => {
                             setMenuOpen((prev) => !prev);
                         }}
-                        className="rounded-md p-2 text-gray-400 transition-colors hover:bg-gray-800 hover:text-white md:hidden"
+                        className="p-2 md:hidden"
                     >
                         {menuOpen ? (
                             <svg
@@ -107,7 +114,7 @@ export default function RootLayout() {
                                 />
                             </svg>
                         )}
-                    </button>
+                    </Button>
                 </div>
 
                 {/* Mobile dropdown */}
@@ -121,13 +128,15 @@ export default function RootLayout() {
                             />
                         </nav>
                         <div className="mt-3 border-t border-gray-800 pt-3">
-                            <button
+                            <Button
+                                variant="ghost"
+                                size="sm"
                                 type="button"
                                 onClick={handleSignOut}
-                                className="w-full rounded-md px-3 py-2 text-left text-sm font-medium text-gray-400 transition-colors hover:bg-gray-800 hover:text-white"
+                                className="w-full justify-start text-sm"
                             >
                                 Sign out
-                            </button>
+                            </Button>
                         </div>
                     </div>
                 )}

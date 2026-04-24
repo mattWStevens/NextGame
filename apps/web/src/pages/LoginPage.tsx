@@ -3,6 +3,9 @@ import { Link, useNavigate } from 'react-router-dom';
 import { ROUTES } from '../lib/routes';
 import { trpc } from '../lib/trpc';
 import { LoginSchema } from '@nextgame/shared';
+import { Card, CardBody } from '../components/ui/Card';
+import { Input } from '../components/ui/Input';
+import { Button } from '../components/ui/Button';
 
 const EMAIL_ERROR = 'Please enter a valid email address.';
 const PASSWORD_ERROR = 'Password field must not be empty.';
@@ -42,24 +45,20 @@ export default function LoginPage() {
 
         const validatedRequest = LoginSchema.safeParse(request);
 
-        let errorMsg = '';
-        let firstErrorField: HTMLInputElement | null = null;
-
         if (validatedRequest.error) {
             const errorPaths = validatedRequest.error.issues.map((issue) => issue.path[0]);
 
+            let firstErrorField: HTMLInputElement | null = null;
+
             if (errorPaths.includes('email')) {
                 setEmailError(true);
-                errorMsg += `${EMAIL_ERROR} `;
                 firstErrorField ??= emailRef.current;
             }
             if (errorPaths.includes('password')) {
                 setPasswordError(true);
-                errorMsg += `${PASSWORD_ERROR} `;
                 firstErrorField ??= passwordRef.current;
             }
 
-            setError(errorMsg.trim() || null);
             firstErrorField?.focus();
             return;
         }
@@ -86,18 +85,13 @@ export default function LoginPage() {
                     </p>
                 </div>
 
-                <div className="rounded-xl border border-gray-800 bg-gray-900 p-6 shadow-xl">
-                    <form onSubmit={handleSubmit} noValidate className="space-y-4">
-                        <div>
-                            <label
-                                htmlFor="email"
-                                className="mb-1.5 block text-sm font-medium text-gray-300"
-                            >
-                                Email address
-                            </label>
-                            <input
+                <Card>
+                    <CardBody className="p-6">
+                        <form onSubmit={handleSubmit} noValidate className="space-y-4">
+                            <Input
                                 ref={emailRef}
                                 id="email"
+                                label="Email address"
                                 type="email"
                                 autoComplete="email"
                                 required
@@ -106,22 +100,14 @@ export default function LoginPage() {
                                     setEmailError(false);
                                     setEmail(e.target.value);
                                 }}
-                                aria-invalid={emailError}
                                 placeholder="you@example.com"
-                                className={`w-full rounded-lg ${!emailError ? 'border border-gray-700 bg-gray-800' : 'border-2 border-red-800 bg-red-950/50'} px-3.5 py-2.5 text-sm ${!emailError ? 'text-white' : 'text-red-400'} placeholder-gray-500 outline-none transition focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/30`}
+                                error={emailError ? EMAIL_ERROR : undefined}
                             />
-                        </div>
 
-                        <div>
-                            <label
-                                htmlFor="password"
-                                className="mb-1.5 block text-sm font-medium text-gray-300"
-                            >
-                                Password
-                            </label>
-                            <input
+                            <Input
                                 ref={passwordRef}
                                 id="password"
+                                label="Password"
                                 type="password"
                                 autoComplete="current-password"
                                 required
@@ -130,32 +116,30 @@ export default function LoginPage() {
                                     setPasswordError(false);
                                     setPassword(e.target.value);
                                 }}
-                                aria-invalid={passwordError}
                                 placeholder="••••••••"
-                                className={`w-full rounded-lg ${!passwordError ? 'border border-gray-700 bg-gray-800' : 'border-2 border-red-800 bg-red-950/50'} px-3.5 py-2.5 text-sm ${!passwordError ? 'text-white' : 'text-red-400'} placeholder-gray-500 outline-none transition focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/30`}
+                                error={passwordError ? PASSWORD_ERROR : undefined}
                             />
-                        </div>
 
-                        {error !== null && (
-                            <p
-                                id="form-error"
-                                role="alert"
-                                className="rounded-lg border border-red-800 bg-red-950/50 px-3.5 py-2.5 text-sm text-red-400"
+                            {error !== null && (
+                                <p
+                                    id="form-error"
+                                    role="alert"
+                                    className="rounded-lg border border-red-800 bg-red-950/50 px-3.5 py-2.5 text-sm text-red-400"
+                                >
+                                    {error}
+                                </p>
+                            )}
+
+                            <Button
+                                type="submit"
+                                loading={loginMutation.isPending}
+                                className="mt-2 w-full"
                             >
-                                {error}
-                            </p>
-                        )}
-
-                        <button
-                            type="submit"
-                            disabled={loginMutation.isPending}
-                            aria-busy={loginMutation.isPending}
-                            className="mt-2 w-full rounded-lg bg-indigo-600 px-4 py-2.5 text-sm font-semibold text-white transition hover:bg-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 focus:ring-offset-gray-900 disabled:cursor-not-allowed disabled:opacity-50"
-                        >
-                            {loginMutation.isPending ? 'Signing in…' : 'Sign in'}
-                        </button>
-                    </form>
-                </div>
+                                Sign in
+                            </Button>
+                        </form>
+                    </CardBody>
+                </Card>
             </div>
         </div>
     );
