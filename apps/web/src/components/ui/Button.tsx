@@ -1,4 +1,5 @@
 import { Spinner } from './Spinner';
+import { cn } from '../../lib/cn';
 
 type Variant = 'primary' | 'secondary' | 'ghost' | 'destructive';
 type Size = 'sm' | 'md' | 'lg';
@@ -31,7 +32,7 @@ export function Button({
     loading = false,
     disabled,
     children,
-    className = '',
+    className,
     ...props
 }: ButtonProps) {
     const isDisabled = disabled ?? loading;
@@ -41,14 +42,14 @@ export function Button({
             {...props}
             disabled={isDisabled}
             aria-busy={loading}
-            className={[
+            className={cn(
                 'inline-flex items-center justify-center font-semibold transition-colors',
                 'focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-offset-gray-900',
                 'disabled:cursor-not-allowed disabled:opacity-50',
                 variantClasses[variant],
                 sizeClasses[size],
                 className,
-            ].join(' ')}
+            )}
         >
             {loading && <Spinner size="sm" />}
             {children}

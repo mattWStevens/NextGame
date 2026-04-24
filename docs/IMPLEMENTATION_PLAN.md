@@ -216,7 +216,7 @@ NextGame is a local-first game discovery and backlog management app. The codebas
 - Create `apps/web/src/pages/RegisterPage.tsx` — email + password + displayName form, calls `trpc.auth.register.useMutation()`, redirects to `/`
 - **AC:** Registration creates user, login sets session cookie, protected routes redirect to login when unauthenticated
 
-### Task 5.4: Shared UI Components
+### Task 5.4: Shared UI Components (COMPLETE)
 
 - Create in `apps/web/src/components/ui/`:
     - `Button.tsx` — variants (primary, secondary, ghost, destructive), sizes, loading state

@@ -1,3 +1,5 @@
+import { cn } from '../../lib/cn';
+
 interface SpinnerProps {
     size?: 'sm' | 'md' | 'lg';
     className?: string;
@@ -9,10 +11,10 @@ const sizeClasses = {
     lg: 'h-8 w-8',
 };
 
-export function Spinner({ size = 'md', className = '' }: SpinnerProps) {
+export function Spinner({ size = 'md', className }: SpinnerProps) {
     return (
         <svg
-            className={`animate-spin ${sizeClasses[size]} ${className}`}
+            className={cn('animate-spin', sizeClasses[size], className)}
             xmlns="http://www.w3.org/2000/svg"
             fill="none"
             viewBox="0 0 24 24"

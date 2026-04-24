@@ -1,10 +1,16 @@
+import React from 'react';
+import { cn } from '../../lib/cn';
+
 interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {
     label?: string;
     error?: string;
     id: string;
 }
 
-export function Input({ label, error, id, className = '', ...props }: InputProps) {
+export const Input = React.forwardRef<HTMLInputElement, InputProps>(function Input(
+    { label, error, id, className, ...props }: InputProps,
+    ref,
+) {
     const hasError = Boolean(error);
 
     return (
@@ -15,16 +21,17 @@ export function Input({ label, error, id, className = '', ...props }: InputProps
                 </label>
             )}
             <input
+                ref={ref}
                 id={id}
                 aria-invalid={hasError}
                 aria-describedby={hasError ? `${id}-error` : undefined}
-                className={[
+                className={cn(
                     'w-full rounded-lg px-3.5 py-2.5 text-sm placeholder-gray-500 outline-none transition',
                     hasError
                         ? 'border-2 border-red-800 bg-red-950/50 text-red-400 focus:border-red-600 focus:ring-2 focus:ring-red-500/30'
                         : 'border border-gray-700 bg-gray-800 text-white focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/30',
                     className,
-                ].join(' ')}
+                )}
                 {...props}
             />
             {hasError && (
@@ -34,4 +41,4 @@ export function Input({ label, error, id, className = '', ...props }: InputProps
             )}
         </div>
     );
-}
+});

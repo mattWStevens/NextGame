@@ -1,10 +1,12 @@
+import { cn } from '../../lib/cn';
+
 interface TextareaProps extends React.TextareaHTMLAttributes<HTMLTextAreaElement> {
     label?: string;
     error?: string;
     id: string;
 }
 
-export function Textarea({ label, error, id, className = '', ...props }: TextareaProps) {
+export function Textarea({ label, error, id, className, ...props }: TextareaProps) {
     const hasError = Boolean(error);
 
     return (
@@ -18,13 +20,13 @@ export function Textarea({ label, error, id, className = '', ...props }: Textare
                 id={id}
                 aria-invalid={hasError}
                 aria-describedby={hasError ? `${id}-error` : undefined}
-                className={[
+                className={cn(
                     'w-full rounded-lg px-3.5 py-2.5 text-sm placeholder-gray-500 outline-none transition resize-none',
                     hasError
                         ? 'border-2 border-red-800 bg-red-950/50 text-red-400 focus:border-red-600 focus:ring-2 focus:ring-red-500/30'
                         : 'border border-gray-700 bg-gray-800 text-white focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/30',
                     className,
-                ].join(' ')}
+                )}
                 {...props}
             />
             {hasError && (
