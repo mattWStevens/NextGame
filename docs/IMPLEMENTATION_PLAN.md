@@ -236,9 +236,9 @@ NextGame is a local-first game discovery and backlog management app. The codebas
 
 **Goal:** IndexedDB as browser-side source of truth, namespaced per user.
 
-### Task 6.1: Dexie.js Setup
+### Task 6.1: Dexie.js Setup (COMPLETE)
 
-- Install in `apps/web`: `dexie`, `dexie-react-hooks`, `uuid`, `@types/uuid`
+- Install in `apps/web`: `dexie`, `dexie-react-hooks`, `uuid`
 - Create `apps/web/src/lib/db.ts` — Dexie database:
     - Database name: `nextgame-{userId}` (namespaced per user)
     - Start at `version(1)` — document migration pattern in comments for future schema changes (increment version, add `.upgrade()` function)
