@@ -245,12 +245,12 @@ NextGame is a local-first game discovery and backlog management app. The codebas
     - Tables: `games` (indexed: id, igdbId, status, statusOrder, updatedAt), `outbox` (indexed: id, entityId, synced, createdAt)
     - Factory function `getDb(userId)` that returns/caches DB instance per user
 
-### Task 6.2: Data Access Layer
+### Task 6.2: Data Access Layer (COMPLETE)
 
 - Create `apps/web/src/lib/game-store.ts`:
     - `getAllGames()`, `getGamesByStatus(status)`, `getGameById(id)` — read from IndexedDB
-    - `upsertGame(game)` — write to IndexedDB + enqueue outbox entry
-    - `deleteGame(id)` — delete from IndexedDB + enqueue outbox entry
+    - `upsertGame(game)` — write to IndexedDB + enqueue outbox entry (outbox handled in caller useGameMutations)
+    - `deleteGame(id)` — delete from IndexedDB + enqueue outbox entry (outbox handled in caller useGameMutations)
     - `reorderGames(updates)` — batch reorder
     - `hydrate(games)` — bulk-replace IndexedDB with server data (initial sync)
 - Create `apps/web/src/lib/outbox.ts`:

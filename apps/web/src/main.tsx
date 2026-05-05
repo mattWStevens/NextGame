@@ -5,6 +5,7 @@ import router from './router';
 import './index.css';
 import { TrpcProvider } from './providers/TrpcProvider';
 import { ToastProvider } from './providers/ToastProvider';
+import { GameStoreProvider } from './providers/GameStoreProvider';
 
 const rootElement = document.getElementById('root');
 if (!rootElement) throw new Error('Root element not found');
@@ -13,7 +14,9 @@ ReactDOM.createRoot(rootElement).render(
     <React.StrictMode>
         <TrpcProvider>
             <ToastProvider>
-                <RouterProvider router={router} />
+                <GameStoreProvider>
+                    <RouterProvider router={router} />
+                </GameStoreProvider>
             </ToastProvider>
         </TrpcProvider>
     </React.StrictMode>,
