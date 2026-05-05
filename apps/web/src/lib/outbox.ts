@@ -11,8 +11,8 @@ export const createOutboxStore = (userId: string) => {
 
     return {
         enqueue: async (entry: OutboxEntry) => {
-            const newEntry = await db.outbox.add(entry);
-            return newEntry;
+            const newEntryId = await db.outbox.add(entry);
+            return newEntryId;
         },
         getPending: async () => {
             // .equals() does not support booleans - using a filter here instead
